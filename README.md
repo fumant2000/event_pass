@@ -715,4 +715,39 @@ chore:    tâches de maintenance (dépendances, config)
 
 ---
 
-*Projet réalisé dans le cadre de l'exposé Java — Génie Logiciel*
+
+
+
+// Utilisateur normal
+POST /api/auth/request-organizer
+→ { message: "Demande soumise", success: true }
+
+// Admin — voir les demandes
+GET /api/admin/organizer-requests
+→ [
+    { userId: 3, name: "Alice", email: "alice@..", status: "PENDING_ORGANIZER", ... },
+    { userId: 5, name: "Bob",   email: "bob@..",   status: "PENDING_ORGANIZER", ... }
+  ]
+
+// Admin — approuver
+POST /api/admin/organizer-requests/3/approve
+→ { message: "✅ Alice est maintenant organisateur", success: true }
+
+// Admin — rejeter
+POST /api/admin/organizer-requests/5/reject
+→ { message: "Demande de Bob refusée", success: true }
+
+// Dashboard admin au login
+GET /api/admin/stats
+→ {
+    totalUsers: 42,
+    totalOrganizers: 7,
+    pendingOrganizerRequests: 2,   ← badge de notification
+    totalEvents: 15,
+    activeEvents: 8,
+    totalTicketsSold: 312,
+    totalRevenue: 1560000
+  }
+
+
+  *Projet réalisé dans le cadre de l'exposé Java — Génie Logiciel*
