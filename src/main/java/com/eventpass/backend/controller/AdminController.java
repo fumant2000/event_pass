@@ -11,21 +11,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasRole('ADMIN')") // ← tout le controller est ADMIN uniquement
+@PreAuthorize("hasRole('ADMIN')") 
 @RequiredArgsConstructor
 public class AdminController {
 
     private final AdminService adminService;
 
-    // ── Demandes organisateur ────────────────────────────────
 
-    /** Liste toutes les demandes en attente */
     @GetMapping("/organizer-requests")
     public ResponseEntity<List<OrganizerRequestResponse>> getPendingRequests() {
         return ResponseEntity.ok(adminService.getPendingOrganizerRequests());
     }
 
-    /** Approuver une demande */
+
     @PostMapping("/organizer-requests/{userId}/approve")
     public ResponseEntity<MessageResponse> approveOrganizer(@PathVariable Long userId) {
         return ResponseEntity.ok(adminService.approveOrganizer(userId));

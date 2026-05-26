@@ -51,6 +51,18 @@ public class AuthService {
         return buildAuthResponse(user);
     }
 
+    // public MessageResponse requestOrganizerStatus(String email) {
+    // User user = userRepository.findByEmail(email)
+    // .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+    // if (user.getRole() == Role.ORGANIZER)
+    // return MessageResponse.error("Vous êtes déjà organisateur");
+
+    // user.setStatus(UserStatus.PENDING_ORGANIZER);
+    // userRepository.save(user);
+    // return MessageResponse.ok("Demande de statut organisateur soumise");
+    // }
+
     public MessageResponse requestOrganizerStatus(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
@@ -58,9 +70,12 @@ public class AuthService {
         if (user.getRole() == Role.ORGANIZER)
             return MessageResponse.error("Vous êtes déjà organisateur");
 
+        if (user.getStatus() == UserStatus.PENDING_ORGANIZER)
+            return MessageResponse.error("PENDING"); 
+
         user.setStatus(UserStatus.PENDING_ORGANIZER);
         userRepository.save(user);
-        return MessageResponse.ok("Demande de statut organisateur soumise");
+        return MessageResponse.ok("Demande soumise avec succès");
     }
 
     public MessageResponse approveOrganizer(Long userId) {
@@ -81,6 +96,7 @@ public class AuthService {
                 .name(user.getName())
                 .email(user.getEmail())
                 .role(user.getRole())
+                .status(user.getStatus())
                 .build();
     }
 
